@@ -7,7 +7,7 @@ use BennoThommo\Imap\Server;
 class ServerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Ddeboer\Imap\Exception\AuthenticationFailedException
+     * @expectedException \BennoThommo\Imap\Exception\AuthenticationFailedException
      */
     public function testFailedAuthenticate()
     {

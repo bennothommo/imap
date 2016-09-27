@@ -44,7 +44,7 @@ class MailboxTest extends AbstractTest
     }
 
     /**
-     * @expectedException \Ddeboer\Imap\Exception\MessageDoesNotExistException
+     * @expectedException \BennoThommo\Imap\Exception\MessageDoesNotExistException
      * @expectedExceptionMessageRegExp /Message 666 does not exist.*Bad message number/
      */
     public function testGetMessageThrowsException()

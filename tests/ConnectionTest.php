@@ -15,18 +15,18 @@ class ConnectionTest extends AbstractTest
         $this->assertInternalType('array', $mailboxes);
 
         foreach ($mailboxes as $mailbox) {
-            $this->assertInstanceOf('\Ddeboer\Imap\Mailbox', $mailbox);
+            $this->assertInstanceOf('\BennoThommo\Imap\Mailbox', $mailbox);
         }
     }
 
     public function testGetMailbox()
     {
         $mailbox = static::getConnection()->getMailbox('INBOX');
-        $this->assertInstanceOf('\Ddeboer\Imap\Mailbox', $mailbox);
+        $this->assertInstanceOf('\BennoThommo\Imap\Mailbox', $mailbox);
     }
 
     /**
-     * @expectedException \Ddeboer\Imap\Exception\MailboxDoesNotExistException
+     * @expectedException \BennoThommo\Imap\Exception\MailboxDoesNotExistException
      */
     public function testCreateMailbox()
     {
@@ -50,7 +50,7 @@ class ConnectionTest extends AbstractTest
     }
 
     /**
-     * @expectedException \Ddeboer\Imap\Exception\MailboxDoesNotExistException
+     * @expectedException \BennoThommo\Imap\Exception\MailboxDoesNotExistException
      */
     public function testGetInvalidMailbox()
     {
