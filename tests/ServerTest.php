@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap\Tests;
+namespace BennoThommo\Imap\Tests;
 
-use Ddeboer\Imap\Server;
+use BennoThommo\Imap\Server;
 
 class ServerTest extends \PHPUnit_Framework_TestCase
 {

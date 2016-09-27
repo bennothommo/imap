@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddeboer\Imap\Tests;
+namespace BennoThommo\Imap\Tests;
 
 class ConnectionTest extends AbstractTest
 {

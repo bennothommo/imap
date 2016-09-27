@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddeboer\Imap;
+namespace BennoThommo\Imap;
 
 class MessageIterator extends \ArrayIterator
 {

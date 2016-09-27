@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap;
+namespace BennoThommo\Imap;
 
-use Ddeboer\Transcoder\Transcoder;
+use BennoThommo\Transcoder\Transcoder;
 
 class Parameters
 {

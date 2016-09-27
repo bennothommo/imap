@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap\Search\State;
+namespace BennoThommo\Imap\Search\State;
 
-use Ddeboer\Imap\Search\AbstractCondition;
+use BennoThommo\Imap\Search\AbstractCondition;
 
 /**
  * Represents a NEW condition. Only new messages will match this condition.

@@ -1,11 +1,11 @@
 <?php
 
-namespace Ddeboer\Imap;
+namespace BennoThommo\Imap;
 
-use Ddeboer\Imap\Exception\MessageDoesNotExistException;
-use Ddeboer\Imap\Message\EmailAddress;
-use Ddeboer\Imap\Exception\MessageDeleteException;
-use Ddeboer\Imap\Exception\MessageMoveException;
+use BennoThommo\Imap\Exception\MessageDoesNotExistException;
+use BennoThommo\Imap\Message\EmailAddress;
+use BennoThommo\Imap\Exception\MessageDeleteException;
+use BennoThommo\Imap\Exception\MessageMoveException;
 
 /**
  * An IMAP message (e-mail)

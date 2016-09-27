@@ -1,10 +1,10 @@
 <?php
-namespace Ddeboer\Imap\Tests;
+namespace BennoThommo\Imap\Tests;
 
-use Ddeboer\Imap\Exception\MailboxDoesNotExistException;
-use Ddeboer\Imap\Mailbox;
-use Ddeboer\Imap\Server;
-use Ddeboer\Imap\Connection;
+use BennoThommo\Imap\Exception\MailboxDoesNotExistException;
+use BennoThommo\Imap\Mailbox;
+use BennoThommo\Imap\Server;
+use BennoThommo\Imap\Connection;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {

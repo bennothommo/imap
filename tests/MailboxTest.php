@@ -1,11 +1,11 @@
 <?php
 
-namespace Ddeboer\Imap\Tests;
+namespace BennoThommo\Imap\Tests;
 
-use Ddeboer\Imap\Mailbox;
-use Ddeboer\Imap\Search\Email\To;
-use Ddeboer\Imap\Search\Text\Body;
-use Ddeboer\Imap\SearchExpression;
+use BennoThommo\Imap\Mailbox;
+use BennoThommo\Imap\Search\Email\To;
+use BennoThommo\Imap\Search\Text\Body;
+use BennoThommo\Imap\SearchExpression;
 
 class MailboxTest extends AbstractTest
 {

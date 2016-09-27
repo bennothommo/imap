@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddeboer\Imap\Search\Email;
+namespace BennoThommo\Imap\Search\Email;
 
 /**
  * Represents a "From" email address condition. Messages must have been sent

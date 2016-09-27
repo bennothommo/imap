@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap\Search\LogicalOperator;
+namespace BennoThommo\Imap\Search\LogicalOperator;
 
-use Ddeboer\Imap\Search\AbstractCondition;
+use BennoThommo\Imap\Search\AbstractCondition;
 
 /**
  * Represents an OR operator. Messages only need to match one of the conditions

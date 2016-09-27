@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddeboer\Imap\Exception;
+namespace BennoThommo\Imap\Exception;
 
 class MessageMoveException extends Exception
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Ddeboer\Imap\Message;
+namespace BennoThommo\Imap\Message;
 
-use Ddeboer\Imap\Parameters;
-use Ddeboer\Transcoder\Transcoder;
+use BennoThommo\Imap\Parameters;
+use BennoThommo\Transcoder\Transcoder;
 
 /**
  * A message part

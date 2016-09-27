@@ -1,6 +1,6 @@
 <?php
 
-namespace Ddeboer\Imap\Message;
+namespace BennoThommo\Imap\Message;
 
 /**
  * An e-mail attachment

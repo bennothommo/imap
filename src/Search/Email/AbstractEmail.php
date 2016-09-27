@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap\Search\Email;
+namespace BennoThommo\Imap\Search\Email;
 
-use Ddeboer\Imap\Search\AbstractCondition;
+use BennoThommo\Imap\Search\AbstractCondition;
 
 /**
  * Represents an email condition.

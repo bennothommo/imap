@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap\Search\Flag;
+namespace BennoThommo\Imap\Search\Flag;
 
-use Ddeboer\Imap\Search\AbstractCondition;
+use BennoThommo\Imap\Search\AbstractCondition;
 
 /**
  * Represents an RECENT flag condition. Messages must have the \\RECENT flag

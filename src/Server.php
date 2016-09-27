@@ -1,8 +1,8 @@
 <?php
 
-namespace Ddeboer\Imap;
+namespace BennoThommo\Imap;
 
-use Ddeboer\Imap\Exception\AuthenticationFailedException;
+use BennoThommo\Imap\Exception\AuthenticationFailedException;
 
 /**
  * An IMAP server
