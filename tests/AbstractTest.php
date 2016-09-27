@@ -12,21 +12,27 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $server = new Server('imap.gmail.com');
-
-        if (false === \getenv('EMAIL_USERNAME')) {
+        if (getenv('TEST_EMAIL_SERVER') === false) {
             throw new \RuntimeException(
-                'Please set environment variable EMAIL_USERNAME before running functional tests'
+                'Please set environment variable TEST_EMAIL_SERVER before running functional tests'
             );
         }
 
-        if (false === \getenv('EMAIL_PASSWORD')) {
+        if (getenv('TEST_EMAIL_USERNAME') === false) {
             throw new \RuntimeException(
-                'Please set environment variable EMAIL_PASSWORD before running functional tests'
+                'Please set environment variable TEST_EMAIL_USERNAME before running functional tests'
             );
         }
 
-        static::$connection = $server->authenticate(\getenv('EMAIL_USERNAME'), \getenv('EMAIL_PASSWORD'));
+        if (getenv('TEST_EMAIL_PASSWORD') === false) {
+            throw new \RuntimeException(
+                'Please set environment variable TEST_EMAIL_PASSWORD before running functional tests'
+            );
+        }
+
+        $server = new Server(getenv('TEST_EMAIL_SERVER'));
+
+        static::$connection = $server->authenticate(getenv('TEST_EMAIL_USERNAME'), getenv('TEST_EMAIL_PASSWORD'));
     }
 
     /**
@@ -91,7 +97,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 
         $mailbox->addMessage($message);
     }
-    
+
     protected function getFixture($fixture)
     {
         return file_get_contents(__DIR__ . '/fixtures/' . $fixture);
