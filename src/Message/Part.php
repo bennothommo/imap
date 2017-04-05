@@ -185,9 +185,6 @@ class Part implements \RecursiveIterator
                     throw new \UnexpectedValueException('Cannot decode ' . $this->getEncoding());
             }
 
-            echo $this->decodedContent;
-            die();
-
             // If this part is a text part, try to convert its encoding to UTF-8.
             // We don't want to convert an attachment's encoding.
             if ($this->getType() === self::TYPE_TEXT

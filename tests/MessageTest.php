@@ -79,8 +79,7 @@ class MessageTest extends AbstractTest
         $message = self::$Mailbox->addMessage($this->getFixture('selfmanager'), true);
         $html = $message->getBodyHtml();
 
-        print_r($html);
-        die();
+        $this->assertContains("<html><body>", $html);
     }
 
     public function testBcc()
