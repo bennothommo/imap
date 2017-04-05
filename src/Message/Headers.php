@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap\Message;
+namespace Ddeboer\Imap\Message;
 
-use BennoThommo\Imap\Parameters;
+use Ddeboer\Imap\Parameters;
 
 /**
  * Collection of message headers

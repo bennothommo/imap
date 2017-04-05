@@ -1,9 +1,9 @@
 <?php
 
-namespace BennoThommo\Imap\Message;
+namespace Ddeboer\Imap\Message;
 
-use BennoThommo\Imap\Parameters;
-use BennoThommo\Transcoder\Transcoder;
+use Ddeboer\Imap\Parameters;
+use Ddeboer\Transcoder\Transcoder;
 
 /**
  * A message part
@@ -17,6 +17,7 @@ class Part implements \RecursiveIterator
     const TYPE_AUDIO = 'audio';
     const TYPE_IMAGE = 'image';
     const TYPE_VIDEO = 'video';
+    const TYPE_MODEL = 'model';
     const TYPE_OTHER = 'other';
     const TYPE_UNKNOWN = 'unknown';
 
@@ -31,23 +32,24 @@ class Part implements \RecursiveIterator
     const SUBTYPE_HTML = 'HTML';
 
     protected $typesMap = array(
-        0 => self::TYPE_TEXT,
-        1 => self::TYPE_MULTIPART,
-        2 => self::TYPE_MESSAGE,
-        3 => self::TYPE_APPLICATION,
-        4 => self::TYPE_AUDIO,
-        5 => self::TYPE_IMAGE,
-        6 => self::TYPE_VIDEO,
-        7 => self::TYPE_OTHER
+        TYPETEXT => self::TYPE_TEXT,
+        TYPEMULTIPART => self::TYPE_MULTIPART,
+        TYPEMESSAGE => self::TYPE_MESSAGE,
+        TYPEAPPLICATION => self::TYPE_APPLICATION,
+        TYPEAUDIO => self::TYPE_AUDIO,
+        TYPEIMAGE => self::TYPE_IMAGE,
+        TYPEVIDEO => self::TYPE_VIDEO,
+        TYPEMODEL => self::TYPE_MODEL,
+        TYPEOTHER => self::TYPE_OTHER
     );
 
     protected $encodingsMap = array(
-        0 => self::ENCODING_7BIT,
-        1 => self::ENCODING_8BIT,
-        2 => self::ENCODING_BINARY,
-        3 => self::ENCODING_BASE64,
-        4 => self::ENCODING_QUOTED_PRINTABLE,
-        5 => self::ENCODING_UNKNOWN
+        ENC7BIT => self::ENCODING_7BIT,
+        ENC8BIT => self::ENCODING_8BIT,
+        ENCBINARY => self::ENCODING_BINARY,
+        ENCBASE64 => self::ENCODING_BASE64,
+        ENCQUOTEDPRINTABLE => self::ENCODING_QUOTED_PRINTABLE,
+        ENCOTHER => self::ENCODING_UNKNOWN
     );
 
     protected $type;
@@ -153,6 +155,12 @@ class Part implements \RecursiveIterator
         return $this->content;
     }
 
+    protected function stripNonBase64Content($content)
+    {
+        preg_match_all('/^([a-zA-Z0-9\+\/\=]+[\n\r]+)$/m', $content, $matches);
+        return implode("\n", $matches[0]);
+    }
+
     /**
      * Get decoded part content
      *
@@ -163,7 +171,7 @@ class Part implements \RecursiveIterator
         if (null === $this->decodedContent) {
             switch ($this->getEncoding()) {
                 case self::ENCODING_BASE64:
-                    $this->decodedContent = base64_decode($this->getContent($keepUnseen));
+                    $this->decodedContent = base64_decode(chunk_split($this->stripNonBase64Content($this->getContent($keepUnseen))), true);
                     break;
                 case self::ENCODING_QUOTED_PRINTABLE:
                     $this->decodedContent =  quoted_printable_decode($this->getContent($keepUnseen));
@@ -176,6 +184,9 @@ class Part implements \RecursiveIterator
                 default:
                     throw new \UnexpectedValueException('Cannot decode ' . $this->getEncoding());
             }
+
+            echo $this->decodedContent;
+            die();
 
             // If this part is a text part, try to convert its encoding to UTF-8.
             // We don't want to convert an attachment's encoding.
@@ -245,7 +256,7 @@ class Part implements \RecursiveIterator
                 if (null === $this->partNumber) {
                     $partNumber = ($key + 1);
                 } else {
-                    $partNumber = (string) ($this->partNumber . '.' . ($key+1));
+                    $partNumber = (string) $this->partNumber . '.' . ($key + 1);
                 }
 
                 if ($this->isAttachment($partStructure)) {

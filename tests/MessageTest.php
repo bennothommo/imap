@@ -1,116 +1,95 @@
 <?php
 
-namespace BennoThommo\Imap\Tests;
+namespace Ddeboer\Imap\Tests;
 
 class MessageTest extends AbstractTest
 {
     /**
-     * @var \BennoThommo\Imap\Mailbox
+     * @var \Ddeboer\Imap\Mailbox
      */
     protected $mailbox;
+    public static $Mailbox = null;
 
-    public function setUp()
+    public static function before()
     {
-        $this->mailbox = $this->createMailbox('test-message');
+        self::$Mailbox = self::createMailbox('test-message');
     }
 
-    public function tearDown()
+    public static function after()
     {
-        $this->deleteMailbox($this->mailbox);
+        self::deleteMailbox(self::$Mailbox);
     }
 
     public function testKeepUnseen()
     {
-        $this->createTestMessage($this->mailbox, 'Message A');
-        $this->createTestMessage($this->mailbox, 'Message B');
-        $this->createTestMessage($this->mailbox, 'Message C');
+        $first = $this->createTestMessage(self::$Mailbox, 'Message A');
+        $second = $this->createTestMessage(self::$Mailbox, 'Message B');
 
-        $message = $this->mailbox->getMessage(1);
-        $this->assertFalse($message->isSeen());
+        $this->assertFalse($first->isSeen());
 
-        $message->getBodyText();
-        $this->assertTrue($message->isSeen());
+        $first->getBodyText();
+        $this->assertTrue($first->isSeen());
 
-        $message = $this->mailbox->getMessage(2);
-        $this->assertFalse($message->isSeen());
+        $this->assertFalse($second->isSeen());
 
-        $message->keepUnseen()->getBodyText();
-        $this->assertFalse($message->isSeen());
-    }
-
-    public function testEncoding7Bit()
-    {
-        $this->createTestMessage($this->mailbox, 'lietuviškos raidės', 'lietuviškos raidės');
-
-        $message = $this->mailbox->getMessage(1);
-        $this->assertEquals('lietuviškos raidės', $message->getSubject());
-        $this->assertEquals('lietuviškos raidės', $message->getBodyText());
+        $second->keepUnseen()->getBodyText();
+        $this->assertFalse($second->isSeen());
     }
 
     public function testEncodingQuotedPrintable()
     {
         $boundary = 'Mailer=123';
-        $raw = "Subject: ESPAÑA\r\n"
-            . "Date: =?ISO-8859-2?Q?Fri,_13_Jun_2014_17:18:44_+020?= =?ISO-8859-2?Q?0_(St=F8edn=ED_Evropa_(letn=ED_=E8as))?=\r\n"
-            . "Content-Type: multipart/alternative; boundary=\"$boundary\"\r\n"
-            . "--$boundary\r\n"
-            . "Content-Transfer-Encoding: quoted-printable\r\n"
-            . "Content-Type: text/html; charset=\"windows-1252\"\r\n"
-            . "\r\n"
-            . "<html><body>Espa=F1a</body></html>\r\n\r\n"
-            . "--$boundary--\r\n\r\n";
+        $raw = "Subject: ESPAÑA\n"
+            . "Date: =?ISO-8859-2?Q?Fri,_13_Jun_2014_17:18:44_+020?= =?ISO-8859-2?Q?0_(St=F8edn=ED_Evropa_(letn=ED_=E8as))?=\n"
+            . "Content-Type: multipart/alternative; boundary=\"$boundary\"\n\n"
+            . "--$boundary\n"
+            . "Content-Transfer-Encoding: quoted-printable\n"
+            . "Content-Type: text/html; charset=\"windows-1252\"\n"
+            . "\n"
+            . "<html><body>Espa=F1a</body></html>\n\n"
+            . "--$boundary--\n\n";
 
-        $this->mailbox->addMessage($raw);
+        $message = self::$Mailbox->addMessage($raw, true);
 
-        $message = $this->mailbox->getMessage(1);
         $this->assertEquals('ESPAÑA', $message->getSubject());
-        $this->assertEquals("<html><body>España</body></html>\r\n", $message->getBodyHtml());
+        $this->assertContains("<html><body>España</body></html>", $message->getBodyHtml());
         $this->assertEquals(new \DateTime('2014-06-13 17:18:44+0200'), $message->getDate());
     }
-    
+
     public function testEmailAddress()
     {
-        $this->mailbox->addMessage($this->getFixture('email_address'));
-        $message = $this->mailbox->getMessage(1);
-        
+        $message = self::$Mailbox->addMessage($this->getFixture('email_address'), true);
+
         $from = $message->getFrom();
-        $this->assertInstanceOf('\BennoThommo\Imap\Message\EmailAddress', $from);
+        $this->assertInstanceOf('\Ddeboer\Imap\Message\EmailAddress', $from);
         $this->assertEquals('no_host', $from->getMailbox());
 
         $cc = $message->getCc();
         $this->assertCount(2, $cc);
-        $this->assertInstanceOf('\BennoThommo\Imap\Message\EmailAddress', $cc[0]);
+        $this->assertInstanceOf('\Ddeboer\Imap\Message\EmailAddress', $cc[0]);
         $this->assertEquals('This one is right', $cc[0]->getName());
         $this->assertEquals('ding@dong.com', $cc[0]->getAddress());
-        
-        $this->assertInstanceOf('\BennoThommo\Imap\Message\EmailAddress', $cc[1]);
+
+        $this->assertInstanceOf('\Ddeboer\Imap\Message\EmailAddress', $cc[1]);
         $this->assertEquals('No-address', $cc[1]->getMailbox());
+    }
+
+    public function testBase64EncodedEmail()
+    {
+        $message = self::$Mailbox->addMessage($this->getFixture('selfmanager'), true);
+        $html = $message->getBodyHtml();
+
+        print_r($html);
+        die();
     }
 
     public function testBcc()
     {
         $raw = "Subject: Undisclosed recipients\r\n";
-        $this->mailbox->addMessage($raw);
-
-        $message = $this->mailbox->getMessage(1);
+        $message = self::$Mailbox->addMessage($raw, true);
 
         $this->assertEquals('Undisclosed recipients', $message->getSubject());
         $this->assertCount(0, $message->getTo());
-    }
-    
-    public function testDelete()
-    {
-        $this->createTestMessage($this->mailbox, 'Message A');
-        $this->createTestMessage($this->mailbox, 'Message B');
-        $this->createTestMessage($this->mailbox, 'Message C');
-
-        $message = $this->mailbox->getMessage(3);
-        $message->delete();
-
-        $this->assertCount(2, $this->mailbox);
-        foreach ($this->mailbox->getMessages() as $message) {
-            $this->assertNotEquals('Message C', $message->getSubject());
-        }
     }
 
     /**
@@ -118,11 +97,11 @@ class MessageTest extends AbstractTest
      */
     public function testGetAttachments()
     {
-        $this->mailbox->addMessage(
-            $this->getFixture('attachment_encoded_filename')
+        $message = self::$Mailbox->addMessage(
+            $this->getFixture('attachment_encoded_filename'),
+            true
         );
-        
-        $message = $this->mailbox->getMessage(1);
+
         $this->assertCount(1, $message->getAttachments());
         $attachment = $message->getAttachments()[0];
         $this->assertEquals(
@@ -130,7 +109,7 @@ class MessageTest extends AbstractTest
             $attachment->getFilename()
         );
     }
-    
+
     public function getAttachmentFixture()
     {
         return [

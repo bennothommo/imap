@@ -1,9 +1,9 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Date;
+namespace Ddeboer\Imap\Search\Date;
 
 use DateTime;
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Represents a date condition.

@@ -1,6 +1,6 @@
 <?php
 
-namespace BennoThommo\Imap;
+namespace Ddeboer\Imap;
 
 /**
  * An IMAP mailbox (commonly referred to as a ‘folder’)
@@ -123,11 +123,23 @@ class Mailbox implements \Countable, \IteratorAggregate
      *
      * @param string $message
      *
-     * @return boolean
+     * @return boolean|Message
      */
-    public function addMessage($message)
+    public function addMessage($message, $returnMessage = false)
     {
-        return imap_append($this->connection->getResource(), $this->mailbox, $message);
+        if ($returnMessage === true) {
+            // Find next UID
+            $status = imap_status($this->connection->getResource(), $this->mailbox, SA_UIDNEXT);
+            $nextUid = $status->uidnext;
+        }
+
+        $result = imap_append($this->connection->getResource(), $this->mailbox, $message);
+
+        if ($result === false) {
+            return false;
+        } else {
+            return ($returnMessage === true) ? $this->getMessage($nextUid) : true;
+        }
     }
 
     /**

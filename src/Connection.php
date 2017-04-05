@@ -1,9 +1,9 @@
 <?php
 
-namespace BennoThommo\Imap;
+namespace Ddeboer\Imap;
 
-use BennoThommo\Imap\Exception\Exception;
-use BennoThommo\Imap\Exception\MailboxDoesNotExistException;
+use Ddeboer\Imap\Exception\Exception;
+use Ddeboer\Imap\Exception\MailboxDoesNotExistException;
 
 /**
  * A connection to an IMAP server that is authenticated for a user

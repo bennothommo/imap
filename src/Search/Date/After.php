@@ -1,6 +1,6 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Date;
+namespace Ddeboer\Imap\Search\Date;
 
 /**
  * Represents a date after condition. Messages must have a date after the

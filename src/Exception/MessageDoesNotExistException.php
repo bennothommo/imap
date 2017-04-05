@@ -1,6 +1,6 @@
 <?php
 
-namespace BennoThommo\Imap\Exception;
+namespace Ddeboer\Imap\Exception;
 
 class MessageDoesNotExistException extends Exception
 {

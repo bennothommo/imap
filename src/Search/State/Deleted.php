@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap\Search\State;
+namespace Ddeboer\Imap\Search\State;
 
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Represents a DELETED condition. Messages must have been marked for deletion

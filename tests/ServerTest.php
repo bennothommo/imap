@@ -1,17 +1,17 @@
 <?php
 
-namespace BennoThommo\Imap\Tests;
+namespace Ddeboer\Imap\Tests;
 
-use BennoThommo\Imap\Server;
+use Ddeboer\Imap\Server;
 
 class ServerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \BennoThommo\Imap\Exception\AuthenticationFailedException
+     * @expectedException \Ddeboer\Imap\Exception\AuthenticationFailedException
      */
     public function testFailedAuthenticate()
     {
-        $server = new Server('imap.gmail.com');
+        $server = new Server(getenv(TEST_EMAIL_SERVER));
         $server->authenticate('fake_username', 'fake_password');
     }
 }

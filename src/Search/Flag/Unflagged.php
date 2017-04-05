@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Flag;
+namespace Ddeboer\Imap\Search\Flag;
 
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Represents a UNFLAGGED flag condition. Messages must no have the \\FLAGGED

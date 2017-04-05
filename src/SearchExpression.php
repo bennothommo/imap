@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap;
+namespace Ddeboer\Imap;
 
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Defines a search expression that can be used to look up email messages.

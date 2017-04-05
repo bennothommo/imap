@@ -1,11 +1,11 @@
 <?php
 
-namespace BennoThommo\Imap;
+namespace Ddeboer\Imap;
 
-use BennoThommo\Imap\Exception\MessageDoesNotExistException;
-use BennoThommo\Imap\Message\EmailAddress;
-use BennoThommo\Imap\Exception\MessageDeleteException;
-use BennoThommo\Imap\Exception\MessageMoveException;
+use Ddeboer\Imap\Exception\MessageDoesNotExistException;
+use Ddeboer\Imap\Message\EmailAddress;
+use Ddeboer\Imap\Exception\MessageDeleteException;
+use Ddeboer\Imap\Exception\MessageMoveException;
 
 /**
  * An IMAP message (e-mail)
@@ -157,7 +157,7 @@ class Message extends Message\Part
      */
     public function isSeen()
     {
-        return 'U' != $this->getHeaders()->get('unseen');
+        return ($this->getHeaders()->get('recent') !== 'N' && $this->getHeaders()->get('unseen') !== 'U');
     }
 
     /**
@@ -201,6 +201,13 @@ class Message extends Message\Part
                 return $part->getDecodedContent($this->keepUnseen);
             }
         }
+
+        // If message has no parts, check if this message itself is HTML, and return that
+        if ($this->getSubtype() == 'HTML') {
+            return $this->getDecodedContent($this->keepUnseen);
+        }
+
+        return null;
     }
 
     /**

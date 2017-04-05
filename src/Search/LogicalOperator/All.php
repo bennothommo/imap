@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap\Search\LogicalOperator;
+namespace Ddeboer\Imap\Search\LogicalOperator;
 
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Represents an ALL operator. Messages must match all conditions following this

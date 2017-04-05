@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Flag;
+namespace Ddeboer\Imap\Search\Flag;
 
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Represents an UNSEEN flag condition. Messages must not have the \\SEEN flag

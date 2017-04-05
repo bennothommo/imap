@@ -1,6 +1,6 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Date;
+namespace Ddeboer\Imap\Search\Date;
 
 /**
  * Represents a date on condition. Messages must have a date matching the

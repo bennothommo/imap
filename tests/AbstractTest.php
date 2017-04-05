@@ -1,14 +1,40 @@
 <?php
-namespace BennoThommo\Imap\Tests;
+namespace Ddeboer\Imap\Tests;
 
-use BennoThommo\Imap\Exception\MailboxDoesNotExistException;
-use BennoThommo\Imap\Mailbox;
-use BennoThommo\Imap\Server;
-use BennoThommo\Imap\Connection;
+use Ddeboer\Imap\Exception\MailboxDoesNotExistException;
+use Ddeboer\Imap\Mailbox;
+use Ddeboer\Imap\Server;
+use Ddeboer\Imap\Connection;
 
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
     protected static $connection;
+    protected static $executing = false;
+
+    public function setUp()
+    {
+        // Trigger the before() callback - this is a replacement for setUpBeforeClass that should respect test filters
+        if (!self::$executing) {
+            static::$executing = true;
+            static::before();
+        }
+
+        parent::setUp();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        // Trigger the after() callback - this is a replacement for tearDownAfterClass that should respect test filters
+        if (static::$executing) {
+            static::$executing = false;
+            static::after();
+        }
+
+        parent::tearDownAfterClass();
+    }
+
+    public static function before() {}
+    public static function after() {}
 
     public static function setUpBeforeClass()
     {
@@ -52,9 +78,9 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      *
      * @return Mailbox
      */
-    protected function createMailbox($name)
+    protected static function createMailbox($name)
     {
-        $uniqueName = $name . uniqid();
+        $uniqueName = 'INBOX.' . $name . uniqid();
 
         try {
             $mailbox = static::getConnection()->getMailbox($uniqueName);
@@ -71,13 +97,11 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
      *
      * @param Mailbox $mailbox
      */
-    protected function deleteMailbox(Mailbox $mailbox)
+    protected static function deleteMailbox(Mailbox $mailbox)
     {
-        // Move all messages in the mailbox to Gmail trash
-        $trash = self::getConnection()->getMailbox('[Gmail]/Bin');
-
+        // Delete all messages
         foreach ($mailbox->getMessages() as $message) {
-            $message->move($trash);
+            $message->delete();
         }
         $mailbox->delete();
     }
@@ -95,7 +119,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             . "\r\n"
             . "$contents";
 
-        $mailbox->addMessage($message);
+        return $mailbox->addMessage($message, true);
     }
 
     protected function getFixture($fixture)

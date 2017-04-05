@@ -1,8 +1,8 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Text;
+namespace Ddeboer\Imap\Search\Text;
 
-use BennoThommo\Imap\Search\AbstractCondition;
+use Ddeboer\Imap\Search\AbstractCondition;
 
 /**
  * Represents a text based condition. Text based conditions use a contains

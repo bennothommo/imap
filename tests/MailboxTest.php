@@ -1,11 +1,11 @@
 <?php
 
-namespace BennoThommo\Imap\Tests;
+namespace Ddeboer\Imap\Tests;
 
-use BennoThommo\Imap\Mailbox;
-use BennoThommo\Imap\Search\Email\To;
-use BennoThommo\Imap\Search\Text\Body;
-use BennoThommo\Imap\SearchExpression;
+use Ddeboer\Imap\Mailbox;
+use Ddeboer\Imap\Search\Email\To;
+use Ddeboer\Imap\Search\Text\Body;
+use Ddeboer\Imap\SearchExpression;
 
 class MailboxTest extends AbstractTest
 {
@@ -30,7 +30,7 @@ class MailboxTest extends AbstractTest
 
     public function testGetName()
     {
-        $this->assertStringStartsWith('test-mailbox', $this->mailbox->getName());
+        $this->assertStringStartsWith('INBOX.test-mailbox', $this->mailbox->getName());
     }
 
     public function testGetMessages()
@@ -44,7 +44,7 @@ class MailboxTest extends AbstractTest
     }
 
     /**
-     * @expectedException \BennoThommo\Imap\Exception\MessageDoesNotExistException
+     * @expectedException \Ddeboer\Imap\Exception\MessageDoesNotExistException
      * @expectedExceptionMessageRegExp /Message 666 does not exist.*Bad message number/
      */
     public function testGetMessageThrowsException()
@@ -60,17 +60,17 @@ class MailboxTest extends AbstractTest
     public function testSearch()
     {
         $this->createTestMessage($this->mailbox, 'Result', 'Contents');
-        
+
         $search = new SearchExpression();
         $search->addCondition(new To('me@here.com'))
             ->addCondition(new Body('Contents'))
         ;
-        
+
         $messages = $this->mailbox->getMessages($search);
         $this->assertCount(1, $messages);
         $this->assertEquals('Result', $messages->current()->getSubject());
     }
-    
+
     public function testSearchNoResults()
     {
         $search = new SearchExpression();

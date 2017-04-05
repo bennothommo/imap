@@ -1,6 +1,6 @@
 <?php
 
-namespace BennoThommo\Imap\Search\Text;
+namespace Ddeboer\Imap\Search\Text;
 
 /**
  * Represents a message text contains condition. Messages must contain the
